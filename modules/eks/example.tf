@@ -41,7 +41,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source = "../"
+  source = ""
 
   cluster_version = "1.23"
 

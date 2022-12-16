@@ -1,4 +1,4 @@
 module "example" {
-  source = "../../"
+  source = ".."
   name   = "lento-test"
 }
