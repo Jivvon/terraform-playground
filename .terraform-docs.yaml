@@ -1,0 +1,41 @@
+content: |-
+  ## Example
+
+  ```hcl
+  {{ include "example/example.tf" }}
+  ```
+
+  {{ .Modules }}
+  
+  ## Resources
+
+  | Type | The Resource Spec Address | Position |
+  |------|---------------------------|----------|
+  {{- range .Module.Resources }}
+  | {{ .GetMode }} | {{ .Spec }} | {{ .Position.Filename }}#{{ .Position.Line }} |
+  {{- end }}  
+  
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+formatter: "markdown table"
+
+output:
+  file: README.md
+  mode: inject
+
+sort:
+  enabled: true
+  by: name
+
+recursive:
+  enabled: true
+  path: modules
+
+settings:
+  anchor: true
+  color: true
+  default: true
+  description: false
+  lockfile: false
