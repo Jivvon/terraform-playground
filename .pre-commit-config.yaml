@@ -1,0 +1,7 @@
+repos:
+# 지금은 우선 사용되고 있는 다른 repo의 것을 사용하고 추후에는 내부용 pre-commit을 만들어서 사용하면 좋을듯
+- repo: https://github.com/gruntwork-io/pre-commit
+  rev: v0.1.17
+  hooks:
+    # Terraform fmt 체크를 해줌
+    - id: terraform-fmt
