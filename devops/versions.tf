@@ -3,6 +3,7 @@ locals {
     Environment = "devops" # devops, exp, production
     Terraform   = "true"
     createUser  = "lento"
+    source      = "https://github.com/Jivvon/terraform-playground.git"
   }
 }
 
