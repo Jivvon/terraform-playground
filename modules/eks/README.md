@@ -45,7 +45,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source = "../"
+  source = ""
 
   cluster_version = "1.23"
 
@@ -128,8 +128,10 @@ resource "aws_security_group_rule" "secondary_cidr" {
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_addons"></a> [addons](#module\_addons) | modules/eks_addon | n/a |
+| <a name="module_eks"></a> [eks](#module\_eks) |  | n/a |
 | <a name="module_iam"></a> [iam](#module\_iam) | modules/eks_iam | n/a |
 | <a name="module_node_groups"></a> [node\_groups](#module\_node\_groups) | modules/eks_ec2_node | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | n/a |
 
 ## Resources
 
@@ -137,6 +139,7 @@ resource "aws_security_group_rule" "secondary_cidr" {
 |------|---------------------------|----------|
 | resource | aws_eks_cluster.this | modules/eks/main.tf#71 |
 | resource | aws_security_group.this | modules/eks/main.tf#28 |
+| resource | aws_security_group_rule.secondary_cidr | modules/eks/example.tf#112 |
 | resource | aws_security_group_rule.this | modules/eks/main.tf#53 |
 
 ## Inputs

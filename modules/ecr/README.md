@@ -1,25 +1,24 @@
 <!-- BEGIN_TF_DOCS -->
-HASDASDALKSMDLAKSMDLKASMLKDLAKSMDLKASMDKLA
-
-
-
 ## Example
 
 ```hcl
 module "example" {
-  source = "../../"
-  name = "lento-test"
+  source = ".."
+  name   = "lento-test"
 }
 ```
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_example"></a> [example](#module\_example) | .. | n/a |
 
 ## Resources
 
-
-- resource.aws_ecr_repository.this (modules/ecr/main.tf#5)
+| Type | The Resource Spec Address | Position |
+|------|---------------------------|----------|
+| resource | aws_ecr_repository.this | modules/ecr/main.tf#5 |
 
 ## Inputs
 
@@ -32,8 +31,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_repository_url"></a> [repository\_url](#output\_repository\_url) | Repository URL |
-
-
-
-ENDENDNENDN
+| <a name="output_test_output"></a> [test\_output](#output\_test\_output) | n/a |
 <!-- END_TF_DOCS -->
