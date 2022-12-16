@@ -30,7 +30,7 @@ sort:
   by: name
 
 recursive:
-  enabled: true
+  enabled: false
   path: modules
 
 settings:
