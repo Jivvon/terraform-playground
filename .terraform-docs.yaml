@@ -2,7 +2,7 @@ content: |-
   ## Example
 
   ```hcl
-  {{ include "example.tf" }}
+  {{ include "example/example.tf" }}
   ```
 
   {{ .Modules }}
@@ -30,8 +30,8 @@ sort:
   by: name
 
 recursive:
-  enabled: false
-  path: modules
+  enabled: true
+  path: .
 
 settings:
   anchor: true
