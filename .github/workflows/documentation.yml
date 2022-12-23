@@ -1,7 +1,7 @@
 name: Generate terraform docs
 on:
-  - pull_request:
-      types: [closed]
+  pull_request:
+    types: [closed]
 
 jobs:
   docs:
