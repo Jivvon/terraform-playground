@@ -9,12 +9,18 @@ locals {
 
 terraform {
   required_version = ">= 1.5.1"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.7.0"
+    }
+  }
 }
 
 # default APN1
 provider "aws" {
-  region  = "ap-northeast-1"
-  profile = "devops"
+  region  = var.aws_config.aws_region
+  profile = var.aws_config.aws_profile
 
   default_tags {
     tags = local.default_tags
