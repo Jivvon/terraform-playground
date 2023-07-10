@@ -13,8 +13,11 @@ variable "subnet_id" {
   type = string
 }
 
-variable "security_group_id" {
-  type = string
+variable "security_group_rules" {
+  type = object({
+    ingress = optional(list(string), [])
+    egress  = optional(list(string), [])
+  })
 }
 
 variable "ami_id" {
