@@ -4,6 +4,7 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+*.state
 
 # Crash log files
 crash.log
@@ -37,6 +38,11 @@ terraform.rc
 .terraform.lock.hcl
 .DS_Store
 
-*_security
-
 .idea
+
+# files that is overwritten by terragrunt
+**/.terragrunt-cache/**
+**/backend.tf
+**/provider.tf
+**/postgresql/**/aws_provider.tf
+!bootstrap/backend.tf
