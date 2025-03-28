@@ -1,5 +1,9 @@
 locals {
   backend_tfvars = jsondecode(read_tfvars_file("${get_path_to_repo_root()}/backend.tfvars.json"))
+  account_locals = read_terragrunt_config(find_in_parent_folders("account.hcl")).locals
+  env_locals     = read_terragrunt_config("env.hcl").locals
+
+  provider_configs = lookup(local.backend_tfvars, local.account_locals.tenancy, null)
 }
 
 generate backend {
@@ -7,11 +11,11 @@ generate backend {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "oci" {
-  tenancy_ocid     = "${local.backend_tfvars.oracle_jy.tenancy_ocid}"
-  user_ocid        = "${local.backend_tfvars.oracle_jy.user_ocid}"
-  fingerprint      = "${local.backend_tfvars.oracle_jy.fingerprint}"
-  private_key_path = "${local.backend_tfvars.oracle_jy.private_key_path}"
-  region           = "${local.backend_tfvars.oracle_jy.region}"
+  tenancy_ocid     = "${local.provider_configs.tenancy_ocid}"
+  user_ocid        = "${local.provider_configs.user_ocid}"
+  fingerprint      = "${local.provider_configs.fingerprint}"
+  private_key_path = "${local.provider_configs.private_key_path}"
+  region           = "${local.provider_configs.region}"
 }
 EOF
 }

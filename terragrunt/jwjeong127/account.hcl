@@ -1,0 +1,3 @@
+locals {
+  tenancy = "jwjeong127"
+}
