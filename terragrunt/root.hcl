@@ -1,5 +1,5 @@
 locals {
-  backend_tfvars = jsondecode(read_tfvars_file("${get_terragrunt_dir()}/../backend.tfvars.json"))
+  backend_tfvars = jsondecode(read_tfvars_file("${get_path_to_repo_root()}/backend.tfvars.json"))
 }
 
 generate backend {
