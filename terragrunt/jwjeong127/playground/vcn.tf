@@ -2,12 +2,12 @@ locals {
   vpc_cidr_block = "10.0.0.0/16"
   # vpc cidr: /16
   # subnet cidr: /23, private: start from 0.0, public: start from 100.0
-  private_subnets = [
-    cidrsubnet(local.vpc_cidr_block, 7, 0),
-    cidrsubnet(local.vpc_cidr_block, 7, 1),
-    cidrsubnet(local.vpc_cidr_block, 7, 2),
-    cidrsubnet(local.vpc_cidr_block, 7, 3),
-  ]
+  # private_subnets = [
+  #   cidrsubnet(local.vpc_cidr_block, 7, 0),
+  #   cidrsubnet(local.vpc_cidr_block, 7, 1),
+  #   cidrsubnet(local.vpc_cidr_block, 7, 2),
+  #   cidrsubnet(local.vpc_cidr_block, 7, 3),
+  # ]
   public_subnets = [
     cidrsubnet(local.vpc_cidr_block, 7, 50),
     cidrsubnet(local.vpc_cidr_block, 7, 51),
@@ -36,12 +36,8 @@ module "vcn" {
     for idx, v in local.public_subnets : "public_${idx}" => {
       cidr_block = v
       type       = "public"
-    } }, {
-    for idx, v in local.private_subnets : "private_${idx}" => {
-      cidr_block = v
-      type       = "private"
-    } }
-  )
+    }
+  })
 
   # routing rules
   internet_gateway_route_rules = null
