@@ -1,3 +1,4 @@
 locals {
-  stage = "playground"
+  stage         = "playground"
+  instance_name = "johnnie_walker"
 }
