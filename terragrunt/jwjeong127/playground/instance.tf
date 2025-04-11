@@ -16,8 +16,11 @@ module "instance" {
     oci_core_network_security_group.egress_all.id,
     oci_core_network_security_group.tailscale.id,
   ]
+  user_data = base64encode(templatefile("${var.git_repo_root}/user-data.tftpl.yaml", {
+    tailscale_auth_key = var.root_locals.shared_configs.tailscale_auth_key
+  }))
   public_ip                   = "RESERVED"
-  ssh_public_keys             = file(var.root_locals.provider_configs.public_key_path)
+  ssh_public_keys             = file(var.root_locals.shared_configs.public_key_path)
   block_storage_sizes_in_gbs  = [100]
   shape                       = "VM.Standard.A1.Flex"
   instance_flex_ocpus         = 2

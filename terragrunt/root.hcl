@@ -1,9 +1,10 @@
 locals {
-  backend_tfvars = jsondecode(read_tfvars_file("${get_path_to_repo_root()}/backend.tfvars.json"))
+  tfvars         = jsondecode(read_tfvars_file("${get_path_to_repo_root()}/terraform.tfvars.json"))
   account_locals = read_terragrunt_config(find_in_parent_folders("account.hcl")).locals
   env_locals     = read_terragrunt_config("env.hcl").locals
 
-  provider_configs = lookup(local.backend_tfvars, local.account_locals.tenancy, null)
+  provider_configs = lookup(local.tfvars.backend, local.account_locals.tenancy, null)
+  shared_configs   = lookup(local.tfvars, "shared", null)
 }
 
 generate backend {
