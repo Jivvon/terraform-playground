@@ -47,3 +47,5 @@ terraform.rc
 **/provider.tf
 **/postgresql/**/aws_provider.tf
 !bootstrap/backend.tf
+
+**/_*.tf

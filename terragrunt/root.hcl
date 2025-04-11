@@ -8,7 +8,7 @@ locals {
 }
 
 generate backend {
-  path      = "backend.tf"
+  path      = "_backend.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 provider "oci" {
@@ -22,13 +22,13 @@ EOF
 }
 
 generate provider {
-  path      = "provider.tf"
+  path      = "_provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 terraform {
   required_providers {
     oci = {
-      source  = "oracle/oci"
+      source = "oracle/oci"
     }
   }
 }
