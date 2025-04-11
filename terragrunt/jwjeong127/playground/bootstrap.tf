@@ -17,19 +17,8 @@ variable "git_repo_root" {
   type = string
 }
 
-moved {
-  from = module.instance
-  to   = module.bootstrap.module.instance
+## outputs
+
+output "public_ip" {
+  value = module.bootstrap.instance.public_ip
 }
-
-moved {
-  from = module.vcn
-  to   = module.bootstrap.module.vcn
-}
-
-moved {
-  from = oci_network_load_balancer_network_load_balancer.test_network_load_balancer
-  to   = module.bootstrap.oci_network_load_balancer_network_load_balancer.test_network_load_balancer
-}
-
-
