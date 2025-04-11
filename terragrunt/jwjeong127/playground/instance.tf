@@ -16,7 +16,7 @@ module "instance" {
     oci_core_network_security_group.egress_all.id
   ]
   public_ip                   = "RESERVED"
-  ssh_public_keys             = file("~/.ssh/oracle_id_rsa.pub")
+  ssh_public_keys             = file(var.root_locals.provider_configs.public_key_path)
   block_storage_sizes_in_gbs  = [100]
   shape                       = "VM.Standard.A1.Flex"
   instance_flex_ocpus         = 2
