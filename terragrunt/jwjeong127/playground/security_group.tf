@@ -32,3 +32,24 @@ resource "oci_core_network_security_group_security_rule" "egress_all" {
   description               = "Allow all Egress traffic"
   destination               = "0.0.0.0/0"
 }
+
+resource "oci_core_network_security_group" "tailscale" {
+  vcn_id         = module.vcn.vcn_id
+  compartment_id = var.root_locals.provider_configs.compartment_id
+  display_name   = "tailscale"
+}
+
+resource "oci_core_network_security_group_security_rule" "tailscale_rule" {
+  network_security_group_id = oci_core_network_security_group.tailscale.id
+  direction                 = "INGRESS"
+  protocol                  = "17" # UDP
+  description               = "Allow Tailscale from anywhere"
+  source_type               = "CIDR_BLOCK"
+  source                    = "0.0.0.0/0"
+  udp_options {
+    destination_port_range {
+      min = 41641
+      max = 41641
+    }
+  }
+}

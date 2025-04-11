@@ -13,7 +13,8 @@ module "instance" {
   subnet_ocids          = values({ for k, v in module.vcn.subnet_id : k => v if startswith(k, "public") })
   primary_vnic_nsg_ids = [
     oci_core_network_security_group.ssh.id,
-    oci_core_network_security_group.egress_all.id
+    oci_core_network_security_group.egress_all.id,
+    oci_core_network_security_group.tailscale.id,
   ]
   public_ip                   = "RESERVED"
   ssh_public_keys             = file(var.root_locals.provider_configs.public_key_path)
