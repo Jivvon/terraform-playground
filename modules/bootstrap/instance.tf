@@ -3,6 +3,7 @@ data "oci_core_image" "ubuntu" {
 }
 
 module "instance" {
+  count  = var.create_instance ? 1 : 0
   source = "oracle-terraform-modules/compute-instance/oci"
 
   instance_count        = 2
