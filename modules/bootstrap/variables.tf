@@ -5,3 +5,8 @@ variable "root_locals" {
 variable "git_repo_root" {
   type = string
 }
+
+variable "create_instance" {
+  type    = bool
+  default = true
+}
