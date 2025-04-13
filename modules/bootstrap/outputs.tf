@@ -1,3 +1,3 @@
 output "instance" {
-  value = module.instance
+  value = try(module.instance[0], null)
 }
