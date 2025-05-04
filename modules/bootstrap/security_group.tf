@@ -39,7 +39,7 @@ resource "oci_core_network_security_group" "tailscale" {
   display_name   = "tailscale"
 }
 
-resource "oci_core_network_security_group_security_rule" "tailscale_rule" {
+resource "oci_core_network_security_group_security_rule" "tailscale_rule_udp" {
   network_security_group_id = oci_core_network_security_group.tailscale.id
   direction                 = "INGRESS"
   protocol                  = "17" # UDP
@@ -50,6 +50,69 @@ resource "oci_core_network_security_group_security_rule" "tailscale_rule" {
     destination_port_range {
       min = 41641
       max = 41641
+    }
+  }
+}
+
+resource "oci_core_network_security_group_security_rule" "tailscale_rule_all" {
+  network_security_group_id = oci_core_network_security_group.tailscale.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  description               = "Allow Tailscale from anywhere"
+  source_type               = "CIDR_BLOCK"
+  source                    = "100.0.0.0/8"
+}
+
+resource "oci_core_network_security_group" "vcn_internal" {
+  vcn_id         = module.vcn.vcn_id
+  compartment_id = var.root_locals.provider_configs.compartment_id
+  display_name   = "vcn-internal"
+}
+
+# VCN 내부에서의 모든 트래픽 허용
+resource "oci_core_network_security_group_security_rule" "allow_all_vcn_ingress" {
+  network_security_group_id = oci_core_network_security_group.vcn_internal.id
+  direction                 = "INGRESS"
+  protocol                  = "all"
+  description               = "Allow all ingress traffic from within VCN"
+  source_type               = "CIDR_BLOCK"
+  source                    = var.root_locals.env_locals.vpc_cidr_block
+}
+
+resource "oci_core_network_security_group" "kubernetes" {
+  vcn_id         = module.vcn.vcn_id
+  compartment_id = var.root_locals.provider_configs.compartment_id
+  display_name   = "kubernetes"
+}
+
+# API 서버 통신
+# resource "oci_core_network_security_group_security_rule" "kubernetes_api_server" {
+#   network_security_group_id = oci_core_network_security_group.kubernetes.id
+#   direction                 = "INGRESS"
+#   protocol                  = "6" # TCP
+#   description               = "Allow Kubernetes API Server"
+#   source_type               = "CIDR_BLOCK"
+#   source                    = "0.0.0.0/0"  # 실제 환경에서는 더 제한적인 CIDR을 사용하세요
+#   tcp_options {
+#     destination_port_range {
+#       min = 6443
+#       max = 6443
+#     }
+#   }
+# }
+
+# NodePort 서비스
+resource "oci_core_network_security_group_security_rule" "kubernetes_nodeport" {
+  network_security_group_id = oci_core_network_security_group.kubernetes.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP
+  description               = "Allow NodePort Services"
+  source_type               = "CIDR_BLOCK"
+  source                    = "0.0.0.0/0" # 실제 환경에서는 더 제한적인 CIDR을 사용하세요
+  tcp_options {
+    destination_port_range {
+      min = 30000
+      max = 32767
     }
   }
 }
