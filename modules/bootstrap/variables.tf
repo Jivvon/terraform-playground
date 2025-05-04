@@ -10,3 +10,8 @@ variable "create_instance" {
   type    = bool
   default = true
 }
+
+variable "has_controlplane" {
+  type    = bool
+  default = true
+}

@@ -82,7 +82,7 @@ resource "oci_core_network_security_group_security_rule" "allow_all_vcn_ingress"
 resource "oci_core_network_security_group" "kubernetes" {
   vcn_id         = module.vcn.vcn_id
   compartment_id = var.root_locals.provider_configs.compartment_id
-  display_name   = "kubernetes"
+  display_name   = "kubernetes-nodeport"
 }
 
 # API 서버 통신
@@ -111,8 +111,30 @@ resource "oci_core_network_security_group_security_rule" "kubernetes_nodeport" {
   source                    = "0.0.0.0/0" # 실제 환경에서는 더 제한적인 CIDR을 사용하세요
   tcp_options {
     destination_port_range {
-      min = 30000
-      max = 32767
+      min = 30010
+      max = 30010 # max 32767
     }
   }
 }
+
+resource "oci_core_network_security_group" "ingress_https" {
+  vcn_id         = module.vcn.vcn_id
+  compartment_id = var.root_locals.provider_configs.compartment_id
+  display_name   = "ingress-https"
+}
+
+resource "oci_core_network_security_group_security_rule" "ingress_https" {
+  network_security_group_id = oci_core_network_security_group.ingress_https.id
+  direction                 = "INGRESS"
+  protocol                  = "6" # TCP
+  description               = "Allow HTTPS from anywhere"
+  source_type               = "CIDR_BLOCK"
+  source                    = "0.0.0.0/0"
+  tcp_options {
+    destination_port_range {
+      min = 443
+      max = 443
+    }
+  }
+}
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.2/deploy/static/provider/cloud/deploy.yaml
