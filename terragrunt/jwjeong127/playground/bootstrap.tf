@@ -3,8 +3,10 @@
 module "bootstrap" {
   source = "${var.git_repo_root}/modules/bootstrap"
 
-  root_locals   = var.root_locals
-  git_repo_root = var.git_repo_root
+  root_locals      = var.root_locals
+  git_repo_root    = var.git_repo_root
+  create_instance  = true
+  has_controlplane = true
 }
 
 ## variables
@@ -20,5 +22,5 @@ variable "git_repo_root" {
 ## outputs
 
 output "public_ip" {
-  value = module.bootstrap.instance.public_ip
+  value = try(module.bootstrap.instance.public_ip, null)
 }

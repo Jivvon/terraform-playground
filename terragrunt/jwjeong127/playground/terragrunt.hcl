@@ -4,7 +4,6 @@ include "root" {
 }
 
 inputs = {
-  root_locals      = include.root.locals
-  git_repo_root    = get_repo_root()
-  has_controlplane = true
+  root_locals   = include.root.locals
+  git_repo_root = get_repo_root()
 }
