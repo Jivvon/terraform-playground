@@ -21,7 +21,7 @@ moved {
 resource "oci_network_load_balancer_backend_set" "this" {
   health_checker {
     protocol = "TCP"
-    port     = 30010
+    port     = 30361 # 30010
   }
 
   name                     = "kubernetes-nodes"
@@ -35,14 +35,22 @@ resource "oci_network_load_balancer_backend" "kubernetes_nodeport" {
 
   backend_set_name         = oci_network_load_balancer_backend_set.this.name
   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
-  port                     = 30010
+  port                     = 32549                                           # 30010
   target_id                = module.instance[0].instance_id[1 - count.index] # instance[0] could be controlplane
 }
 
-resource "oci_network_load_balancer_listener" "kubernetes_nodeport" {
+resource "oci_network_load_balancer_listener" "https" {
   default_backend_set_name = oci_network_load_balancer_backend_set.this.name
-  name                     = "kubernetes-nodeport"
+  name                     = "https"
   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
-  port                     = 30010
+  port                     = 443
   protocol                 = "TCP"
 }
+
+# resource "oci_network_load_balancer_listener" "kubernetes_nodeport" {
+#   default_backend_set_name = oci_network_load_balancer_backend_set.this.name
+#   name                     = "kubernetes-nodeport"
+#   network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
+#   port                     = 30010
+#   protocol                 = "TCP"
+# }

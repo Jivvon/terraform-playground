@@ -111,8 +111,8 @@ resource "oci_core_network_security_group_security_rule" "kubernetes_nodeport" {
   source                    = "0.0.0.0/0" # 실제 환경에서는 더 제한적인 CIDR을 사용하세요
   tcp_options {
     destination_port_range {
-      min = 30010
-      max = 30010 # max 32767
+      min = 30010 # 30010
+      max = 32767 # max 32767
     }
   }
 }
