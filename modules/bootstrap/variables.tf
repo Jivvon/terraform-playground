@@ -8,10 +8,10 @@ variable "git_repo_root" {
 
 variable "create_instance" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "has_controlplane" {
   type    = bool
-  default = true
+  default = false
 }
