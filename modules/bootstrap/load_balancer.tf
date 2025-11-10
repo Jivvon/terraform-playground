@@ -1,4 +1,6 @@
 resource "oci_network_load_balancer_network_load_balancer" "this" {
+  count = var.create_instance ? 1 : 0
+
   compartment_id = var.root_locals.provider_configs.compartment_id
   display_name   = "network-loadbalancer"
   subnet_id      = module.vcn.subnet_id.public_0
@@ -19,30 +21,34 @@ moved {
 }
 
 resource "oci_network_load_balancer_backend_set" "this" {
+  count = var.create_instance ? 1 : 0
+
   health_checker {
     protocol = "TCP"
     port     = 30361 # 30010
   }
 
   name                     = "kubernetes-nodes"
-  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
+  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this[0].id
   policy                   = "FIVE_TUPLE"
   is_preserve_source       = false
 }
 
 resource "oci_network_load_balancer_backend" "kubernetes_nodeport" {
-  count = var.has_controlplane ? 1 : 2
+  count = var.create_instance ? (var.has_controlplane ? 1 : 2) : 0
 
-  backend_set_name         = oci_network_load_balancer_backend_set.this.name
-  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
+  backend_set_name         = oci_network_load_balancer_backend_set.this[0].name
+  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this[0].id
   port                     = 32549                                           # 30010
   target_id                = module.instance[0].instance_id[1 - count.index] # instance[0] could be controlplane
 }
 
 resource "oci_network_load_balancer_listener" "https" {
-  default_backend_set_name = oci_network_load_balancer_backend_set.this.name
+  count = var.create_instance ? 1 : 0
+
+  default_backend_set_name = oci_network_load_balancer_backend_set.this[0].name
   name                     = "https"
-  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this.id
+  network_load_balancer_id = oci_network_load_balancer_network_load_balancer.this[0].id
   port                     = 443
   protocol                 = "TCP"
 }
