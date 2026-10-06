@@ -1,5 +1,4 @@
 terraform {
-  required_version = ">= 1.9.0"
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
@@ -37,13 +36,9 @@ resource "cloudflare_dns_record" "blog_dev" {
   name    = "blog.dev.jwjeong127.com"
   type    = "A"
   content = var.tailscale_ingress_ip
-  ttl     = 300
-  proxied = false
+  ttl     = 1
   comment = "Private blog and personal archive; access through Tailscale only."
 
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 output "hostname" {

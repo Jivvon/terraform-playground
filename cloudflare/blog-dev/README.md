@@ -4,6 +4,9 @@ This isolated Terraform root creates only the DNS-only A record for
 `blog.dev.jwjeong127.com`. It does not use the OCI/Terragrunt root and does not
 manage existing admin, Argo CD, apex or public blog records.
 
+`ttl = 1` is required by the provider and selects automatic TTL. The provider's
+default `proxied = false` supplies DNS-only behavior without a redundant field.
+
 The default address is the public DNS answer observed for `admin.jwjeong127.com`
 on 2026-10-06: `100.122.136.74`. Verify it still reaches the intended nginx
 Ingress over Tailscale before applying. HTTPS is terminated there using the
@@ -35,6 +38,5 @@ Apply the reviewed plan only after the private Ingress is ready:
 terraform -chdir=cloudflare/blog-dev apply blog-dev.tfplan
 ```
 
-`prevent_destroy` protects against accidental deletion. Rollback can update this
-record to a prior verified private address. Disabling the new blog Ingress closes
+Rollback can update this record to a prior verified private address. Disabling the new blog Ingress closes
 the service without changing existing services or deleting archived data.
