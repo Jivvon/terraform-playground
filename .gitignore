@@ -49,3 +49,7 @@ terraform.rc
 !bootstrap/backend.tf
 
 **/_*.tf
+
+# Reproducible provider selection for the standalone private-blog DNS root.
+!/cloudflare/blog-dev/.terraform.lock.hcl
+*.tfplan
